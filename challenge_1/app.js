@@ -10,28 +10,72 @@ class Player {
     // Updates the player's score
     this.score++;
   }
+
+  resetScore() {
+
+    // Reset score to zero
+    this.score = 0;
+  }
+
+  playerStatsTemplate() {
+
+    var statsDiv = document.createElement("DIV");
+    statsDiv.id = this.symbol;
+    statsDiv.classList.add('playerBox');
+    var nameDiv = document.createElement("H2");
+    var scoreDiv = document.createElement("H3");
+    nameDiv.id = this.name;
+    nameDiv.innerHTML = this.name
+    scoreDiv.id = this.name + "-score";
+    scoreDiv.innerHTML = this.score
+    statsDiv.appendChild(nameDiv);
+    statsDiv.appendChild(scoreDiv);
+
+    return statsDiv
+  }
+
+  updateStatsOnWin() {
+    document.getElementById(this.name + "-score").innerHTML = this.score;
+  }
 }
 
 class Game {
   constructor() {
-    this.board = []
-    this.players = []
+    this.board = [];
+    this.players = [];
     this.movesCount = 0;
     this.currentPlayer;
+    this.init();
+    this.addPlayers();
   }
 
-  addPlayers(name1, name2) {
+  incMoves() {
+    this.movesCount++;
+  }
+
+  resetMoves() {
+    this.movesCount = 0;
+  }
+
+  addPlayers(/*name1, name2*/) {
+
+    var name1 = prompt("First player's name"); // TEMPORARY
+    var name2 = prompt("Second player's name"); // TEMPORARY
 
     // Create 2 player instances
     var player1 = new Player(name1, 0, "X");
     var player2 = new Player(name2, 0, "O");
 
     // Push players to the players array
-    this.players.push(player1)
-    this.players.push(player2)
+    this.players.push(player1);
+    this.players.push(player2);
 
     // Set first player
-    this.currentPlayer = player1 ;
+    this.currentPlayer = player1;
+
+    // Render Generated players
+    document.getElementById('playerStats').appendChild(player1.playerStatsTemplate())
+    document.getElementById('playerStats').appendChild(player2.playerStatsTemplate())
   }
 
   updatePlayer() {
@@ -60,38 +104,60 @@ class Game {
           this.board[i][j] = 0;
       }
     }
+
+    // clear DOM images
+    var boxes = document.getElementsByClassName("col");
+    for (var i = 0 ; i < boxes.length ; i++) {
+      boxes[i].innerHTML = "";
+    }
   }
 
-  changeState(row, col) {
+  changeState(event) {
+
+    // Detect Row and Column of the clicked box
+    var row = parseInt(event.target.id.charAt(1),10);
+    var col = parseInt(event.target.id.charAt(3),10);
 
     // change the state of a specific box using its indices
+    if (!Number.isNaN(row)) {
+      console.log(row)
+      console.log(col)
 
-    if (this.board[row][col] === 0) { // Place symbol if the box is already taken
+      // Place symbol if the box is already taken
       this.board[row][col] = this.currentPlayer.symbol
 
-    } else { // Handle the case where a player clicks on a box that is already played
+      // Place the image
+      var imgDiv = document.createElement("IMG");
+      imgDiv.src = './assets/' + this.currentPlayer.symbol + '.png';
+      event.target.appendChild(imgDiv)
 
+      // Increment the number of moves
+      this.incMoves();
+
+      // Handle wins, draws and continuations
+      if (this.check(row, col)) { // check if player won
+
+        // display message and update score
+        alert(this.currentPlayer.name + " WON!!")
+        this.replay()// change this to pop up that runs restart or reset LISTEN TEMPORARY
+        this.currentPlayer.updateScore();
+        this.currentPlayer.updateStatsOnWin()
+
+      } else if (this.movesCount === 9) { // Handle Draws
+        alert("draw")// change this to pop up that runs restart or reset LISTEN TEMPORARY
+        this.replay();
+
+      } else { // continuation
+
+        // Update player if game still going
+        this.updatePlayer();
+      }
+
+    // Handle the case where a player clicks on a box that is already played
+    } else {
       console.log('this place is already taken')
-      this.updatePlayer();
     }
 
-    // Handle wins, draws and continuations
-    if (this.check(row, col)) { // check if player won
-
-      // display message and update score
-      console.log(this.currentPlayer.name + " WON!!")
-      this.replay()// change this to pop up that runs restart or reset LISTEN
-      this.currentPlayer.updateScore();
-
-    } else if (this.movesCount === 9) { // Handle Draws
-
-      console.log("draw")// change this to pop up that runs restart or reset LISTEN
-
-    } else { // continuation
-
-      // Update player if game still going
-      this.updatePlayer();
-    }
   }
 
   check(row, col) {
@@ -188,18 +254,18 @@ class Game {
   }
 
   replay() {
-
     // reset the board
     this.init();
+    this.resetMoves();
   }
 
   reset() {
 
     // reset board, scores and brings back the current player to player 1
-    this.init()
+    this.replay()
     this.currentPlayer = player1 ;
-    this.players[0].score = 0;
-    this.players[1].score = 0;
+    this.players[0].resetScore();
+    this.players[1].resetScore();
   }
 }
 
@@ -207,77 +273,8 @@ class Game {
 
 // GAME START button
 
-var startGame = function() {
-  var g = new Game();
-  g.init();
-  g.addPlayers("heni","meher")
-
-  var boxes = document.getElementsByClassName("col");
-  for (var i = 0 ; i < boxes.length ; i++) {
-    boxes[i].addEventListener("click", function(e) {
-      console.log(g.currentPlayer)
-      var row = parseInt(e.target.id.charAt(1),10);
-      var col = parseInt(e.target.id.charAt(3),10);
-      g.changeState(row,col)
-      console.table(g.board)
-    });
-  }
+var game = new Game();
+var boxes = document.getElementsByClassName("col");
+for (var i = 0 ; i < boxes.length ; i++) {
+  boxes[i].addEventListener("click", (e) => game.changeState(e));
 }
-
-
-// // Function to execute when testing on console
-// var g = new Game();
-// var test = function() {
-//   g.init();
-//   g.addPlayers("heni","meher")
-//   console.table(g.board)
-//   g.changeState(0,0)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(0))
-//   console.log("col win : ", g.colWin(0))
-//   console.log("diag win : ", g.diagWin(0,0))
-//   console.log("WIN? : ", g.check(0,0))
-//   g.changeState(1,0)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(1))
-//   console.log("col win : ", g.colWin(0))
-//   console.log("diag win : ", g.diagWin(1,0))
-//   console.log("WIN? : ", g.check(1,0))
-//   g.changeState(1,1)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(1))
-//   console.log("col win : ", g.colWin(1))
-//   console.log("diag win : ", g.diagWin(1,1))
-//   console.log("WIN? : ", g.check(1,1))
-//   g.changeState(1,2)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(1))
-//   console.log("col win : ", g.colWin(2))
-//   console.log("diag win : ", g.diagWin(1,2))
-//   console.log("WIN? : ", g.check(1,2))
-//   g.changeState(0,2)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(0))
-//   console.log("col win : ", g.colWin(2))
-//   console.log("diag win : ", g.diagWin(0,2))
-//   console.log("WIN? : ", g.check(0,2))
-//   g.changeState(2,0)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(2))
-//   console.log("col win : ", g.colWin(0))
-//   console.log("diag win : ", g.diagWin(2,0))
-//   console.log("WIN? : ", g.check(2,0))
-//   g.changeState(2,2)
-//   console.table(g.board)
-//   console.log("row win : ", g.rowWin(2))
-//   console.log("col win : ", g.colWin(0))
-//   console.log("diag win : ", g.diagWin(2,2))
-//   console.log("WIN? : ", g.check(2,2))
-
-//   console.log(g.players[0].score)
-//   console.log(g.players[1].score)
-//   console.log(g.currentPlayer)
-// }
-
-// // invoke test
-// test();
