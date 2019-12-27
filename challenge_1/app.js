@@ -190,61 +190,72 @@ class Game {
   }
 }
 
+/****************************************************************************************************/
 
+// GAME START button
 
-// Function to execute when testing on console
-var g = new Game();
-var test = function() {
+var startGame = function() {
+  var g = new Game();
   g.init();
-  g.addPlayers("heni","meher")
-  console.table(g.board)
-  g.changeState(0,0)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(0))
-  console.log("col win : ", g.colWin(0))
-  console.log("diag win : ", g.diagWin(0,0))
-  console.log("WIN? : ", g.check(0,0))
-  g.changeState(1,0)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(1))
-  console.log("col win : ", g.colWin(0))
-  console.log("diag win : ", g.diagWin(1,0))
-  console.log("WIN? : ", g.check(1,0))
-  g.changeState(1,1)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(1))
-  console.log("col win : ", g.colWin(1))
-  console.log("diag win : ", g.diagWin(1,1))
-  console.log("WIN? : ", g.check(1,1))
-  g.changeState(1,2)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(1))
-  console.log("col win : ", g.colWin(2))
-  console.log("diag win : ", g.diagWin(1,2))
-  console.log("WIN? : ", g.check(1,2))
-  g.changeState(0,2)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(0))
-  console.log("col win : ", g.colWin(2))
-  console.log("diag win : ", g.diagWin(0,2))
-  console.log("WIN? : ", g.check(0,2))
-  g.changeState(2,0)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(2))
-  console.log("col win : ", g.colWin(0))
-  console.log("diag win : ", g.diagWin(2,0))
-  console.log("WIN? : ", g.check(2,0))
-  g.changeState(2,2)
-  console.table(g.board)
-  console.log("row win : ", g.rowWin(2))
-  console.log("col win : ", g.colWin(0))
-  console.log("diag win : ", g.diagWin(2,2))
-  console.log("WIN? : ", g.check(2,2))
-
-  console.log(g.players[0].score)
-  console.log(g.players[1].score)
-  console.log(g.currentPlayer)
+  return g;
 }
 
-// invoke test
-test();
+
+
+
+// // Function to execute when testing on console
+// var g = new Game();
+// var test = function() {
+//   g.init();
+//   g.addPlayers("heni","meher")
+//   console.table(g.board)
+//   g.changeState(0,0)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(0))
+//   console.log("col win : ", g.colWin(0))
+//   console.log("diag win : ", g.diagWin(0,0))
+//   console.log("WIN? : ", g.check(0,0))
+//   g.changeState(1,0)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(1))
+//   console.log("col win : ", g.colWin(0))
+//   console.log("diag win : ", g.diagWin(1,0))
+//   console.log("WIN? : ", g.check(1,0))
+//   g.changeState(1,1)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(1))
+//   console.log("col win : ", g.colWin(1))
+//   console.log("diag win : ", g.diagWin(1,1))
+//   console.log("WIN? : ", g.check(1,1))
+//   g.changeState(1,2)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(1))
+//   console.log("col win : ", g.colWin(2))
+//   console.log("diag win : ", g.diagWin(1,2))
+//   console.log("WIN? : ", g.check(1,2))
+//   g.changeState(0,2)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(0))
+//   console.log("col win : ", g.colWin(2))
+//   console.log("diag win : ", g.diagWin(0,2))
+//   console.log("WIN? : ", g.check(0,2))
+//   g.changeState(2,0)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(2))
+//   console.log("col win : ", g.colWin(0))
+//   console.log("diag win : ", g.diagWin(2,0))
+//   console.log("WIN? : ", g.check(2,0))
+//   g.changeState(2,2)
+//   console.table(g.board)
+//   console.log("row win : ", g.rowWin(2))
+//   console.log("col win : ", g.colWin(0))
+//   console.log("diag win : ", g.diagWin(2,2))
+//   console.log("WIN? : ", g.check(2,2))
+
+//   console.log(g.players[0].score)
+//   console.log(g.players[1].score)
+//   console.log(g.currentPlayer)
+// }
+
+// // invoke test
+// test();
