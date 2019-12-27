@@ -79,7 +79,8 @@ class Game {
     if (this.check(row, col)) { // check if player won
 
       // display message and update score
-      console.log(this.currentPlayer.name + " WON!!") // change this to pop up that runs restart or reset LISTEN
+      console.log(this.currentPlayer.name + " WON!!")
+      this.replay()// change this to pop up that runs restart or reset LISTEN
       this.currentPlayer.updateScore();
 
     } else if (this.movesCount === 9) { // Handle Draws
@@ -145,31 +146,43 @@ class Game {
 
     // only get here after a move where i = j or i + j = 2 (major and minor diagonal)
 
-    // check MAJOR diagonal (i === j), no need to keep track of j since i and j both get +1
-    if( row === col ) {
-      var i = 0;
-      while (i < 2) {
-        if(this.board[i][i] === 0 || this.board[i][i] !== this.board[i+1][i+1]){
-          return false;
+    if (row === col || (row + col) === 2) { // refactored to handle middle case since it applies to both
+
+      // check MAJOR diagonal (i === j), no need to keep track of j since i and j both get +1
+      if( row === col ) {
+        var check = true;
+        var i = 0;
+        while (i < 2) {
+          if(this.board[i][i] === 0 || this.board[i][i] !== this.board[i+1][i+1]){
+            check = false;
+            break;
+          }
+          i++;
         }
-        i++;
+        if (check) {
+          return true;
+        }
       }
-      return true;
+
+
+      // check Minor diagonal (i + j === 2), when i decreases, j increases in the opposite way, need i and j going opposite ways
+      if ( (row + col) === 2) {
+        var check = true;
+        var i = 2;
+        var j = 0;
+        while (j < 2) {
+          if(this.board[i][j] === 0 || this.board[i][j] !== this.board[i-1][j+1]){
+            check = false;
+          }
+          i--;
+          j++;
+        }
+      }
+      if (check) {
+        return true;
+      }
     }
 
-    // check Minor diagonal (i + j === 2), when i decreases, j increases in the opposite way, need i and j going opposite ways
-    if ( row + col === 2) {
-      var i = 2;
-      var j = 0;
-      while (j < 2) {
-        if(this.board[i][j] === 0 || this.board[i][j] !== this.board[i-1][j+1]){
-          return false;
-        }
-        i--;
-        j++;
-      }
-      return true;
-    }
     // if provided with a row or column that doesn't concern the diagonal check, exit with false directly without checking
     return false;
   }
@@ -197,10 +210,19 @@ class Game {
 var startGame = function() {
   var g = new Game();
   g.init();
-  return g;
+  g.addPlayers("heni","meher")
+
+  var boxes = document.getElementsByClassName("col");
+  for (var i = 0 ; i < boxes.length ; i++) {
+    boxes[i].addEventListener("click", function(e) {
+      console.log(g.currentPlayer)
+      var row = parseInt(e.target.id.charAt(1),10);
+      var col = parseInt(e.target.id.charAt(3),10);
+      g.changeState(row,col)
+      console.table(g.board)
+    });
+  }
 }
-
-
 
 
 // // Function to execute when testing on console
