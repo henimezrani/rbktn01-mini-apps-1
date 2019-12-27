@@ -35,6 +35,8 @@ class Game {
 
   changeState(symbol, row, col) { // change the state of a specific box using its indices
 
+    console.log("adding at [" + row + ", " + col + " ]")
+
     if (this.board[row][col] === 0) { // Place symbol if the box is already taken
       this.board[row][col] = symbol
 
@@ -84,8 +86,33 @@ class Game {
     return false;
   }
 
-  diagWin(){
+  diagWin(row, col){ // only get here after a move where i = j or i + j = 2 (major and minor diagonal)
 
+    if( row === col ) { // check MAJOR diagonal (i === j), no need to keep track of j since i and j both get +1
+      var i = 0;
+      while (i < 2) {
+        if(this.board[i][i] === 0 || this.board[i][i] !== this.board[i+1][i+1]){
+          return false;
+        }
+        i++;
+      }
+      return true;
+    }
+
+    if ( row + col === 2) { // check Minor diagonal (i + j === 2), when i decreases, j increases in the opposite way, need i and j going opposite ways
+      var i = 2;
+      var j = 0;
+      while (j < 2) {
+        if(this.board[i][j] === 0 || this.board[i][j] !== this.board[i-1][j+1]){
+          return false;
+        }
+        i--;
+        j++;
+      }
+      return true;
+    }
+
+    return false;
   }
 
   reset() {
@@ -96,6 +123,7 @@ class Game {
 
 
 // Function to execute when testing on console
+
 var test = function() {
   var g = new Game();
   g.init();
@@ -104,26 +132,37 @@ var test = function() {
   console.table(g.board)
   console.log("row win : ", g.rowWin(0))
   console.log("col win : ", g.colWin(0))
+  console.log("diag win : ", g.diagWin(0,0))
   g.changeState('X',1,0)
   console.table(g.board)
   console.log("row win : ", g.rowWin(1))
   console.log("col win : ", g.colWin(0))
+  console.log("diag win : ", g.diagWin(1,0))
   g.changeState('X',1,1)
   console.table(g.board)
   console.log("row win : ", g.rowWin(1))
   console.log("col win : ", g.colWin(1))
+  console.log("diag win : ", g.diagWin(1,1))
   g.changeState('X',1,2)
   console.table(g.board)
   console.log("row win : ", g.rowWin(1))
   console.log("col win : ", g.colWin(2))
+  console.log("diag win : ", g.diagWin(1,2))
   g.changeState('X',0,2)
   console.table(g.board)
   console.log("row win : ", g.rowWin(0))
   console.log("col win : ", g.colWin(2))
+  console.log("diag win : ", g.diagWin(0,2))
   g.changeState('X',2,0)
   console.table(g.board)
   console.log("row win : ", g.rowWin(2))
   console.log("col win : ", g.colWin(0))
+  console.log("diag win : ", g.diagWin(2,0))
+  g.changeState('X',2,2)
+  console.table(g.board)
+  console.log("row win : ", g.rowWin(2))
+  console.log("col win : ", g.colWin(0))
+  console.log("diag win : ", g.diagWin(2,2))
 }
 
 // invoke test
