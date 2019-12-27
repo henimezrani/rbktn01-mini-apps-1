@@ -72,6 +72,7 @@ class Game {
     } else { // Handle the case where a player clicks on a box that is already played
 
       console.log('this place is already taken')
+      this.updatePlayer();
     }
 
     // Handle wins, draws and continuations
