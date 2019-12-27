@@ -49,20 +49,19 @@ class Game {
 
   }
 
-  rowWin() { // Checking for any row win
+  // OPTIMIZED VERSION: no need to check for the entire board, just check the row in which a symbol was just inserted
+  rowWin(row) { // Checking for any row win
 
     // 2 for loops to iterate through all elements
-    for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 2; j++) {
+    for (var j = 0; j < 2; j++) {
 
-        // If an element contains a zero or two elements are not the same, break to check the next row
-        if(this.board[i][j] === 0 || this.board[i][j] !== this.board[i][j+1]){
-          break;
-        }
-        // If you compared the last two elements of the row and didn't break, return true
-        if ( j === 1 ) {
-          return true;
-        }
+      // If an element contains a zero or two elements are not the same, break to check the next row
+      if(this.board[row][j] === 0 || this.board[row][j] !== this.board[row][j+1]){
+        break;
+      }
+      // If you compared the last two elements of the row and didn't break, return true
+      if ( j === 1 ) {
+        return true;
       }
     }
 
@@ -70,17 +69,16 @@ class Game {
     return false;
   }
 
-  colWin() { // Checking for any row win
+  // OPTIMIZED VERSION: no need to check for the entire board, just check the column in which a symbol was just inserted
+  colWin(col) { // Checking for any row win
 
-    // Same process as the rowWin. However, since we are moving along rows before going to the next column, we need to switch the order of the loops
-    for (var j = 0; j < 3; j++) {
-      for (var i = 0; i < 2; i++) {
-        if(this.board[i][j] === 0 || this.board[i][j] !== this.board[i+1][j]){
-          break;
-        }
-        if ( i === 1 ) {
-          return true;
-        }
+    // Same process as the rowWin.
+    for (var i = 0; i < 2; i++) {
+      if(this.board[i][col] === 0 || this.board[i][col] !== this.board[i+1][col]){
+        break;
+      }
+      if ( i === 1 ) {
+        return true;
       }
     }
     return false;
@@ -102,25 +100,30 @@ var test = function() {
   var g = new Game();
   g.init();
   console.table(g.board)
-  console.log(g.colWin())
   g.changeState('X',0,0)
   console.table(g.board)
-  console.log(g.colWin())
+  console.log("row win : ", g.rowWin(0))
+  console.log("col win : ", g.colWin(0))
   g.changeState('X',1,0)
   console.table(g.board)
-  console.log(g.colWin())
+  console.log("row win : ", g.rowWin(1))
+  console.log("col win : ", g.colWin(0))
   g.changeState('X',1,1)
   console.table(g.board)
-  console.log(g.colWin())
+  console.log("row win : ", g.rowWin(1))
+  console.log("col win : ", g.colWin(1))
   g.changeState('X',1,2)
   console.table(g.board)
-  console.log(g.colWin())
+  console.log("row win : ", g.rowWin(1))
+  console.log("col win : ", g.colWin(2))
   g.changeState('X',0,2)
   console.table(g.board)
-  console.log(g.colWin())
+  console.log("row win : ", g.rowWin(0))
+  console.log("col win : ", g.colWin(2))
   g.changeState('X',2,0)
   console.table(g.board)
-  console.log(g.colWin())
+  console.log("row win : ", g.rowWin(2))
+  console.log("col win : ", g.colWin(0))
 }
 
 // invoke test
