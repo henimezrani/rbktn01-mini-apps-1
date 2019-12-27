@@ -70,8 +70,20 @@ class Game {
     return false;
   }
 
-  colWin() {
+  colWin() { // Checking for any row win
 
+    // Same process as the rowWin. However, since we are moving along rows before going to the next column, we need to switch the order of the loops
+    for (var j = 0; j < 3; j++) {
+      for (var i = 0; i < 2; i++) {
+        if(this.board[i][j] === 0 || this.board[i][j] !== this.board[i+1][j]){
+          break;
+        }
+        if ( i === 1 ) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   diagWin(){
@@ -90,25 +102,25 @@ var test = function() {
   var g = new Game();
   g.init();
   console.table(g.board)
-  console.log(g.rowWin())
+  console.log(g.colWin())
   g.changeState('X',0,0)
   console.table(g.board)
-  console.log(g.rowWin())
+  console.log(g.colWin())
   g.changeState('X',1,0)
   console.table(g.board)
-  console.log(g.rowWin())
+  console.log(g.colWin())
   g.changeState('X',1,1)
   console.table(g.board)
-  console.log(g.rowWin())
+  console.log(g.colWin())
   g.changeState('X',1,2)
   console.table(g.board)
-  console.log(g.rowWin())
+  console.log(g.colWin())
   g.changeState('X',0,2)
   console.table(g.board)
-  console.log(g.rowWin())
-  g.changeState('X',2,2)
+  console.log(g.colWin())
+  g.changeState('X',2,0)
   console.table(g.board)
-  console.log(g.rowWin())
+  console.log(g.colWin())
 }
 
 // invoke test
