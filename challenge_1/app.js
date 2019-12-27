@@ -17,11 +17,11 @@ class Game {
     this.gamesCount = []
   }
 
-  init() {
+  init() { // Initialize a board with all zeros
 
     // Initialize Empty 3x3 Board
     this.board = new Array(3);
-    for (var i = 0; i < this.board.length; i++) {
+    for (var i = 0; i < 3; i++) {
       this.board[i] = new Array(3);
     }
 
@@ -31,6 +31,18 @@ class Game {
           this.board[i][j] = 0;
       }
     }
+  }
+
+  changeState(symbol, row, col) { // change the state of a specific box using its indices
+
+    if (this.board[row][col] === 0) { // Place symbol if the box is already taken
+      this.board[row][col] = symbol
+
+    } else { // Handle the case where a player clicks on a box that is already played
+
+      console.log('this place is already taken')
+    }
+
   }
 
   check() {
@@ -53,3 +65,18 @@ class Game {
 
   }
 }
+
+
+
+// Function to execute when testing on console
+var test = function() {
+  var g = new Game();
+  g.init();
+  console.table(g.board)
+  g.changeState('X',0,0)
+  console.table(g.board)
+  g.changeState('X',0,0)
+}
+
+// invoke test
+test();
