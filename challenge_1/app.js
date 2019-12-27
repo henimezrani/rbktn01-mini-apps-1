@@ -2,7 +2,7 @@ class Player {
   constructor(name, score, symbol) {
     this.name = name;
     this.score = score;
-    this.symbol = symbol
+    this.symbol = symbol;
   }
 
   updateScore() {
@@ -16,7 +16,7 @@ class Game {
   constructor() {
     this.board = []
     this.players = []
-    this.gamesCount = []
+    this.movesCount = 0;
     this.currentPlayer;
   }
 
@@ -74,13 +74,18 @@ class Game {
       console.log('this place is already taken')
     }
 
-    // Checks if a player won
-    if (this.check(row, col)) {
+    // Handle wins, draws and continuations
+    if (this.check(row, col)) { // check if player won
 
       // display message and update score
-      console.log(this.currentPlayer.name + " WON!!") // change this to pop up that runs restart or reset
+      console.log(this.currentPlayer.name + " WON!!") // change this to pop up that runs restart or reset LISTEN
       this.currentPlayer.updateScore();
-    } else {
+
+    } else if (this.movesCount === 9) { // Handle Draws
+
+      console.log("draw")// change this to pop up that runs restart or reset LISTEN
+
+    } else { // continuation
 
       // Update player if game still going
       this.updatePlayer();
