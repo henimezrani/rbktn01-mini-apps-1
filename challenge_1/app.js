@@ -8,6 +8,10 @@ class Player {
   playMove() {
 
   }
+
+  updateScore() {
+
+  }
 }
 
 class Game {
@@ -15,6 +19,13 @@ class Game {
     this.board = []
     this.players = []
     this.gamesCount = []
+  }
+
+  addPlayers(name) {
+    var player1 = new Player(name1, 0, "X");
+    var player2 = new Player(name2, 0, "O");
+    this.players.push(player1)
+    this.players.push(player2)
   }
 
   init() { // Initialize a board with all zeros
@@ -47,8 +58,11 @@ class Game {
 
   }
 
-  check() {
-
+  check(row, col) {
+    if (this.rowWin(row) || this.colWin(col) || this.diagWin(row, col)) {
+      return true;
+    }
+    return false;
   }
 
   // OPTIMIZED VERSION: no need to check for the entire board, just check the row in which a symbol was just inserted
@@ -133,36 +147,43 @@ var test = function() {
   console.log("row win : ", g.rowWin(0))
   console.log("col win : ", g.colWin(0))
   console.log("diag win : ", g.diagWin(0,0))
+  console.log("WIN? : ", g.check(0,0))
   g.changeState('X',1,0)
   console.table(g.board)
   console.log("row win : ", g.rowWin(1))
   console.log("col win : ", g.colWin(0))
   console.log("diag win : ", g.diagWin(1,0))
+  console.log("WIN? : ", g.check(1,0))
   g.changeState('X',1,1)
   console.table(g.board)
   console.log("row win : ", g.rowWin(1))
   console.log("col win : ", g.colWin(1))
   console.log("diag win : ", g.diagWin(1,1))
+  console.log("WIN? : ", g.check(1,1))
   g.changeState('X',1,2)
   console.table(g.board)
   console.log("row win : ", g.rowWin(1))
   console.log("col win : ", g.colWin(2))
   console.log("diag win : ", g.diagWin(1,2))
+  console.log("WIN? : ", g.check(1,2))
   g.changeState('X',0,2)
   console.table(g.board)
   console.log("row win : ", g.rowWin(0))
   console.log("col win : ", g.colWin(2))
   console.log("diag win : ", g.diagWin(0,2))
+  console.log("WIN? : ", g.check(0,2))
   g.changeState('X',2,0)
   console.table(g.board)
   console.log("row win : ", g.rowWin(2))
   console.log("col win : ", g.colWin(0))
   console.log("diag win : ", g.diagWin(2,0))
+  console.log("WIN? : ", g.check(2,0))
   g.changeState('X',2,2)
   console.table(g.board)
   console.log("row win : ", g.rowWin(2))
   console.log("col win : ", g.colWin(0))
   console.log("diag win : ", g.diagWin(2,2))
+  console.log("WIN? : ", g.check(2,2))
 }
 
 // invoke test
