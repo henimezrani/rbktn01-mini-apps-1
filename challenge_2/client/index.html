@@ -1,2 +1,26 @@
+<!DOCTYPE html>
+<head>
+    <title>JSON to CSV converter</title>
+
+</head>
+
+<body>
+	<form action="http://localhost:8080/data" method="post">
+		<div>
+			<label for="JSONinput">Paste your JSON text here</label>
+			<input type="textarea" name="JSONtext" id="JSONtext">
+		</div>
+		<div>
+			<label for="JSONfile">Choose your JSON file here</label>
+			<input type="file" id="JSONfile" accept=".json">
+		</div>
+		<div>
+			<button type="submit" id="submit">Submit</button>
+		</div>
+	</form>
 
 
+
+	<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+	<script src='./app.js'></script>
+</body>
