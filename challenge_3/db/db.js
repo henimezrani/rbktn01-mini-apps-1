@@ -10,27 +10,20 @@ db.once('open', function() {
 
 let checkoutSchema = mongoose.Schema({
   //_id: Number, // Customer ID
-  acctInfo: {
     name: String, // Customer Name
     email: String,
-    password: String // Customer Password
-  },
-  shippingInfo: {
+    password: String, // Customer Password
     street1: String, // Street line 1
     street2: String, // Street line 2
     city: String, // City
     zip: Number, // Zip code
-    phone: Number // Phone number
-  },
-  cardInfo: {
-    cardNumber: Number, // Credit Card number
-    expirationMonth: Number, // Credit Card Expiration Month (01)
-    expirationYear: Number, // Credit Card Expiration Year (2019)
+    phone: Number, // Phone number
+    card_Number: Number, // Credit Card number
+    expiration: Number, // Credit Card Expiration Month and year
     ccv: Number, // Last 3 or 4 digits for security
-    billingZip: Number // Billing Zip (not sure what that is)
-  }
+    billing_Zip: Number // Billing Zip
 });
 
-let Checkout = mongoose.model('Repo', checkoutSchema);
+let Checkout = mongoose.model('Checkout', checkoutSchema);
 
 module.exports = Checkout;

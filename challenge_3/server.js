@@ -2,7 +2,7 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-var checkout = require('./db/db.js')
+var Checkout = require('./db/db.js')
 
 var app = express();
 
@@ -14,7 +14,15 @@ app.use(bodyParser.json());
 
 app.post('/data', (req, res) => {
   console.log(req.body)
-  res.status(201).send(req.body)
+  var submission = new Checkout(req.body)
+  submission.save((err, response) => {
+    if (err) { 
+      console.log("error") 
+    } else {
+      res.status(201).send(response)
+    }
+  })
+  
 })
 
 let port = 8080;
