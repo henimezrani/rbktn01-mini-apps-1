@@ -1,11 +1,7 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.reset();
-  }
-
-  reset(){
-    var states = {
+    this.state = {
       count: 1,
       name: "",
       email: "",
@@ -19,9 +15,27 @@ class App extends React.Component {
       expiration: "",
       ccv: "",
       billing_Zip: ""
-    }
-    return states;
+    };
   }
+
+  // reset(){
+  //   var states = {
+  //     count: 1,
+  //     name: "",
+  //     email: "",
+  //     password: "",
+  //     street1: "",
+  //     street2: "",
+  //     city: "",
+  //     zip: "",
+  //     phone: "",
+  //     card_Number: "",
+  //     expiration: "",
+  //     ccv: "",
+  //     billing_Zip: ""
+  //   }
+  //   return states;
+  // }
 
   inc(event){
     event.preventDefault();
@@ -35,11 +49,6 @@ class App extends React.Component {
 
   typing(event) {
     this.setState({[event.target.id]: event.target.value});
-    console.log(this.state)
-  }
-
-  rememberValue(event){
-    return this.state
   }
 
   submitData(event) {
